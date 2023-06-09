@@ -1,39 +1,39 @@
-import { useState } from "react";
-import LikeButton from "./likeButton";
-
 type SceneryCardProps = {
+  id: number;
   name: string;
-  isLike: boolean;
   imgSrc: string;
-  onLikeChange: (liked: boolean) => void;
+  isLike?: boolean;
+  likeScenery: (id: number, isLiked: boolean) => void;
 };
 
-const Scenerycard = (scenery: SceneryCardProps) => {
-  const [isLike, setIsLike] = useState(scenery.isLike);
-
-  const handleLikeChange = (liked: boolean) => {
-    setIsLike(liked);
-    scenery.onLikeChange(liked);
-  };
-
+export const SceneryCard = (props: SceneryCardProps) => {
   return (
-    <div className="photocard bg-white p-4 shadow-md flex flex-col transform-gpu transition-transform duration-200 hover:scale-105">
-      <div className="relative flex-grow">
-        <img
-          src={scenery.imgSrc}
-          alt=""
-          className="object-cover w-full h-full"
-        />
-        <div className="absolute top-0 right-0 p-2">
-          <LikeButton
-            initialValue={isLike}
-            onLikeChange={handleLikeChange}
-          />
-        </div>
+    <div className="hover:scale-110 duration-500 relative shadow-2xl shadow-black">
+      <img
+        src={props.imgSrc}
+        alt=""
+        className="w-fit sm:w-[210px] md:w-[200px] h-[270px] object-cover"
+      />
+      <h3 className=" text-slate-950 bg-white font-semibold text-lg text-center">
+        {props.name}
+      </h3>
+      <div className="absolute text-sm top-[3px] right-[1px]">
+        {!props.isLike ? (
+          <button
+            className="px-2 text-black font-bold"
+            onClick={() => props.likeScenery(props.id, true)}
+          >
+            LIKE
+          </button>
+        ) : (
+          <button
+            className="px-2 text-black font-bold"
+            onClick={() => props.likeScenery(props.id, false)}
+          >
+            LIKED
+          </button>
+        )}
       </div>
-      <h4 className="mt-2 text-xl font-semibold">{scenery.name}</h4>
     </div>
   );
 };
-
-export default Scenerycard;

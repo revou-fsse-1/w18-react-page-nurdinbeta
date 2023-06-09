@@ -1,24 +1,11 @@
-import React, { useState } from 'react';
+type LikeSceneryProps = {
+  count: number;
+};
 
-interface LikeButtonProps {
-  initialValue: boolean;
-  onLikeChange: (liked: boolean) => void;
-}
-
-const LikeButton: React.FC<LikeButtonProps> = ({ initialValue, onLikeChange }) => {
-  const [liked, setLiked] = useState(initialValue);
-
-  const handleLike = () => {
-    const newLiked = !liked;
-    setLiked(newLiked);
-    onLikeChange(newLiked);
-  };
-
+export const LikeScenery = (props: LikeSceneryProps) => {
   return (
-    <div>
-      <button onClick={handleLike}>{liked ? 'LIKED' : 'LIKE'}</button>
+    <div className="fixed top-0 right-0 px-4 py-2 text-black bg-white rounded-bl-2xl z-50 ">
+      <p>You have liked {props.count} photos</p>
     </div>
   );
 };
-
-export default LikeButton;

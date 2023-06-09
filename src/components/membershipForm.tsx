@@ -1,101 +1,135 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-type MembershipFormProps = {
-  onClose: () => void ;
-};
-
-const MembershipForm: React.FC<MembershipFormProps> = ({ onClose }) => {
+export const MembershipForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [emailError, setEmailError] = useState(false);
-  const [firstNameError, setFirstNameError] = useState(false);
-  const [lastNameError, setLastNameError] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
- 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [emailError, setEmailError] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+  const [isSuccess, setIsSuccess] = useState("");
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const field = event.target.name;
+
+    if (field === "email") setEmail(event.target.value);
+    if (field === "firstname") setFirstName(event.target.value);
+    if (field === "lastname") setLastName(event.target.value);
+  };
+
+  const handleMembershipForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-// Reset
-    setEmailError(false);
-    setFirstNameError(false);
-    setLastNameError(false);
-    setSubmitted(false);
+    const Email = email.trim();
+    const FirstName = firstName.trim();
+    const LastName = lastName.trim();
 
-// Validation
-    if (email.trim() === "") {
-      setEmailError(true);
+    if (!Email || Email === undefined) {
+      const field: string | undefined = "Please fill your email";
+      setEmailError(field);
+    } else if (!isValidEmail(Email)) {
+      setEmailError("Email is invalid");
     }
 
-    if (firstName.trim() === "") {
-      setFirstNameError(true);
+    if (!FirstName || FirstName === undefined) {
+      const field: string | undefined = "Please fill your First Name";
+      setFirstNameError(field);
+    };
+
+    if (!LastName || LastName === undefined) {
+      const field: string | undefined = "Please fill your Last Name";
+      setLastNameError(field);
+    };
+
+    if (Email && FirstName && LastName) {
+      onSuccess();
     }
 
-    if (lastName.trim() === "") {
-      setLastNameError(true);
+    if (Email || FirstName || LastName) {
+      setIsSuccess("Congrats! You've become a member.");
     }
-
-
-   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
   };
 
-  const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFirstName(event.target.value);
-  };
-
-   const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLastName(event.target.value);
+  const isValidEmail = (value: string): boolean => {
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return emailRegex.test(value);
   };
 
   const handleClose = () => {
-    onClose();
+    onSuccess();
   };
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
       <div className="bg-white p-4 rounded-lg">
+      <h2 className="py-3 text-2xl text-center">Register to Photo Club Member</h2>
+      <p>Get countless benefit by joining as a member of Photo Club!</p>
+      <form className="py-3 flex flex-col justify-center" onSubmit={handleMembershipForm}>
+        <label className="font-bold" htmlFor="email-user">
+          User Email:
+        </label>
+        <input
+          onChange={handleInputChange}
+          className="border border-black rounded-lg px-2 py2 text-xl "
+          name="email"
+          value={email}
+          id="email-user"
+          type="text"
+        />
+        {!email ? (
+          <span className="my-1 text-red-600">{emailError}</span>
+        ) : (
+          <span></span>
+        )}
+        <label className="font-bold" htmlFor="first-name">
+          First Name:
+        </label>
+        <input
+          onChange={handleInputChange}
+          className="border border-black rounded-lg px-2 py2 text-xl"
+          name="firstname"
+          value={firstName}
+          id="first-name"
+          type="text"
+        />
+        {!firstName ? (
+          <span className="my-1 text-red-600">{firstNameError}</span>
+        ) : (
+          <span></span>
+        )}
+        <label className="font-bold" htmlFor="last-name">
+          Last Name:
+        </label>
+        <input
+          onChange={handleInputChange}
+          className="border border-black rounded-lg px-2 py2 text-xl"
+          name="lastname"
+          value={lastName}
+          id="last-name"
+          type="text"
+        />
+        {!lastName ? (
+          <span className="my-1 text-red-600">{lastNameError}</span>
+        ) : (
+          <span></span>
+        )}
+        <input
+          className="border my-3 px-1 py-1 font-bold text-black border-black rounded-lg cursor-pointer bg-white hover:[#F5EFE7]"
+          type="submit"
+          value="Register"
+        />
         <button className="close-button" onClick={handleClose}>
-          Closed
+          Close
         </button>
-        {!submitted && (
-          <form onSubmit={handleSubmit}>
-            <h4 className="mb-4 font-bold text-lg md:text-xl lg:text-2xl xl:text-3xl">Register as a Membership!</h4>
-            <div className="mb-4">
-              <label className="block">Email:</label>
-              <input type="text" value={email} onChange={handleEmailChange} className="w-full text-center border border-gray-600 rounded" />
-              {emailError && (
-                <p className="text-red-500 mt-0 mb-0">You must fill in your email!</p>
-              )}
-            </div>
-            <div className="mb-4">
-              <label className="block">First Name:</label>
-              <input type="text" value={firstName} onChange={handleFirstNameChange} className="w-full text-center border border-gray-600 rounded" />
-              {firstNameError && (
-                <p className="text-red-500 mt-0 mb-0">You must fill in your first name!</p>
-              )}
-            </div>
-             <div className="mb-4">
-              <label className="block">Last Name:</label>
-              <input type="text" value={lastName} onChange={handleLastNameChange} className="w-full text-center border border-gray-600 rounded" />
-              {lastNameError && (
-                <p className="text-red-500 mt-0 mb-0">You must fill in your last name!</p>
-              )}
-            </div>
-            <button type="submit" className="mt-4 border border-gray-600 rounded">Register Now!</button>
-          </form>
+        {!isSuccess ? (
+          <span></span>
+        ) : (
+          <span className="my-1 text-green-600">{isSuccess}</span>
         )}
-        {submitted && (
-          <div className="text-center">
-            <h2 className="mb-4 font-bold text-lg md:text-xl lg:text-2xl xl:text-3xl">Congrats!</h2>
-            <p>You've registered as a membership</p>
-          </div>
-        )}
-      </div>
+      </form>
+    </div>
     </div>
   );
-}
-
-return null};
+};
 
 export default MembershipForm;

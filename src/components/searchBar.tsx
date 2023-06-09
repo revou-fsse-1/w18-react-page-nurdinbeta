@@ -1,26 +1,22 @@
-import React, { useState } from "react";
-
-type SearchBarProps = {
-  onSearch: (query: string) => void;
+type ScenerySearchQueryProps = {
+  setSearchQuery: (value: string) => void;
 };
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-  const [searchQuery, setSearchQuery] = useState("");
+export const ScenerySearchQuery = (props: ScenerySearchQueryProps) => {
+  const { setSearchQuery } = props;
 
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchQuery(value);
   };
-
-  const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    onSearch(searchQuery);
-  };
-
   return (
-    <form onSubmit={handleOnSubmit}>
-      <input type="text" className="text-center mb-4 w-96 p-2 border border-gray-600 rounded" value={searchQuery} onChange={handleOnChange} placeholder="Search your favourite photo" />
-    </form>
+    <div className="flex justify-center items-center py-2 ">
+      <input
+        className="py-1 px-12 border border-white text-black rounded-xl text-center shadow-2xl shadow-white"
+        type="text"
+        placeholder="search your favorite scenery"
+        onChange={handleInputChange}
+      />
+    </div>
   );
 };
-
-export default SearchBar;
