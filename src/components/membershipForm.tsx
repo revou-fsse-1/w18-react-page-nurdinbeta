@@ -62,8 +62,8 @@ export const MembershipForm = ({ onSuccess }: { onSuccess: () => void }) => {
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
       <div className="bg-white p-4 rounded-lg">
-      <h2 className="py-3 text-2xl text-center">Register to Photo Club Member</h2>
-      <p>Get countless benefit by joining as a member of Photo Club!</p>
+      <h2 className="py-3 text-2xl text-center">Register to be a Member</h2>
+      <p>Get a lot of benefits by register as a member!</p>
       <form className="py-3 flex flex-col justify-center" onSubmit={handleMembershipForm}>
         <label className="font-bold" htmlFor="email-user">
           User Email:
