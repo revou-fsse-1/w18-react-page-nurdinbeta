@@ -4,7 +4,7 @@ This is a simple website providing scenery picture using React, you can like and
 
 ## Link Website
 
-- w18-react-page-nurdinbeta.vercel.app
+https://w18-react-page-nurdinbeta.vercel.app/
 
 ## Installation
 
